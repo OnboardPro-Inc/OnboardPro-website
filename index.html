@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>OnboardPro — Labour Management Platform</title>
+<link rel="stylesheet" href="css/style.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css" />
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen" class="screen-full">
+  <div class="login-bg"></div>
+  <div class="login-card">
+    <div class="login-logo"><img src="logo.svg" width="36" height="36" alt="OnboardPro logo"><span>Onboard<span class="pro">Pro</span></span></div>
+    <div class="login-tagline">Labour Management Platform</div>
+    <div class="login-form">
+      <div class="field"><label>Email address</label><input type="email" id="login-email" value="admin@acmelabour.co.za" /></div>
+      <div class="field"><label>Password</label><input type="password" id="login-pass" value="••••••••" /></div>
+      <button class="btn-login" onclick="showScreen('dashboard')">Sign in <i class="ti ti-arrow-right"></i></button>
+    </div>
+    <div class="login-footer">Don't have an account? <a href="#" onclick="showScreen('signup')">Sign up your company</a></div>
+  </div>
+</div>
+
+<!-- MAIN APP SHELL (shown after login) -->
+<div id="app-shell" style="display:none">
+  <div class="sidebar">
+    <div class="logo-wrap">
+      <div class="logo-icon"><img src="logo.svg" width="28" height="28" alt="OnboardPro logo" style="display:block"></div>
+      <div><div class="logo-text">Onboard<span class="pro">Pro</span></div><div class="logo-company">Acme Labour Co.</div></div>
+    </div>
+    <nav>
+      <a class="nav-item active" onclick="showMain('dashboard')" data-page="dashboard"><i class="ti ti-layout-dashboard"></i> Dashboard</a>
+      <a class="nav-item" onclick="showMain('employees')" data-page="employees"><i class="ti ti-users"></i> Employees</a>
+      <a class="nav-item" onclick="showMain('contracts')" data-page="contracts"><i class="ti ti-file-text"></i> Contracts</a>
+      <a class="nav-item" onclick="showMain('documents')" data-page="documents"><i class="ti ti-folder"></i> Documents</a>
+      <a class="nav-item" onclick="showMain('sites')" data-page="sites"><i class="ti ti-map-pin"></i> Sites</a>
+      <a class="nav-item" onclick="showMain('send-link')" data-page="send-link"><i class="ti ti-send"></i> Send Links</a>
+      <a class="nav-item" onclick="showMain('settings')" data-page="settings"><i class="ti ti-settings"></i> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="user-pill"><i class="ti ti-user-circle"></i> HR Admin</div>
+      <button class="logout-btn" onclick="showScreen('login-screen')"><i class="ti ti-logout"></i></button>
+    </div>
+  </div>
+
+  <div class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="page-dashboard" class="page active">
+      <div class="page-header">
+        <div class="page-title">Dashboard</div>
+        <button class="btn btn-primary" onclick="showMain('send-link')"><i class="ti ti-send"></i> Send onboarding link</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon purple"><i class="ti ti-users"></i></div><div><div class="stat-val">48</div><div class="stat-lbl">Total employees</div></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-circle-check"></i></div><div><div class="stat-val">31</div><div class="stat-lbl">Onboarding complete</div></div></div>
+        <div class="stat-card"><div class="stat-icon amber"><i class="ti ti-clock"></i></div><div><div class="stat-val">12</div><div class="stat-lbl">Pending submission</div></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="ti ti-alert-triangle"></i></div><div><div class="stat-val">5</div><div class="stat-lbl">Docs missing</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Recent employees</span>
+          <input class="search-input" placeholder="Search employees..." oninput="filterTable(this.value)" />
+        </div>
+        <table class="data-table" id="emp-table">
+          <thead><tr><th>Name</th><th>Trade</th><th>Site</th><th>Contract</th><th>Status</th><th>Docs</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="emp-name-cell"><span class="avatar purple">TM</span><div><strong>Thabo Molefe</strong><small>Electrician</small></div></div></td><td>Electrician</td><td>Rustenburg</td><td>6 months</td><td><span class="badge green">Complete</span></td><td>5/5</td><td><button class="icon-btn" onclick="showProfile('Thabo Molefe')"><i class="ti ti-eye"></i></button><button class="icon-btn" onclick="printPOE('Thabo Molefe')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar teal">NK</span><div><strong>Nomsa Khumalo</strong><small>Boilermaker</small></div></div></td><td>Boilermaker</td><td>Witbank</td><td>3 months</td><td><span class="badge amber">Pending</span></td><td>3/5</td><td><button class="icon-btn" onclick="showProfile('Nomsa Khumalo')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-send"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar orange">SP</span><div><strong>Sipho Petersen</strong><small>Welder</small></div></div></td><td>Welder</td><td>Steelpoort</td><td>6 months</td><td><span class="badge red">Docs missing</span></td><td>4/6</td><td><button class="icon-btn" onclick="showProfile('Sipho Petersen')"><i class="ti ti-eye"></i></button><button class="icon-btn" onclick="printPOE('Sipho Petersen')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar pink">LN</span><div><strong>Lerato Nkosi</strong><small>Rigger</small></div></div></td><td>Rigger</td><td>Rustenburg</td><td>12 months</td><td><span class="badge green">Complete</span></td><td>5/5</td><td><button class="icon-btn" onclick="showProfile('Lerato Nkosi')"><i class="ti ti-eye"></i></button><button class="icon-btn" onclick="printPOE('Lerato Nkosi')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar blue">JD</span><div><strong>Johan du Plessis</strong><small>Fitter</small></div></div></td><td>Fitter</td><td>Witbank</td><td>12 months</td><td><span class="badge amber">Pending</span></td><td>4/5</td><td><button class="icon-btn" onclick="showProfile('Johan du Plessis')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-send"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES PAGE -->
+    <div id="page-employees" class="page">
+      <div class="page-header">
+        <div class="page-title">All Employees</div>
+        <button class="btn btn-primary" onclick="showMain('send-link')"><i class="ti ti-user-plus"></i> Add employee</button>
+      </div>
+      <div class="card"><div class="card-header"><span class="card-title">Employee directory</span><span class="badge purple">48 total</span></div>
+        <table class="data-table">
+          <thead><tr><th>Name</th><th>ID Number</th><th>Trade</th><th>Site</th><th>Contract end</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="emp-name-cell"><span class="avatar purple">TM</span><strong>Thabo Molefe</strong></div></td><td>890112****</td><td>Electrician</td><td>Rustenburg</td><td>Dec 2026</td><td><span class="badge green">Active</span></td><td><button class="icon-btn" onclick="showProfile('Thabo Molefe')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-id-badge"></i></button><button class="icon-btn" onclick="printPOE('Thabo Molefe')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar teal">NK</span><strong>Nomsa Khumalo</strong></div></td><td>920308****</td><td>Boilermaker</td><td>Witbank</td><td>Sep 2026</td><td><span class="badge amber">Pending docs</span></td><td><button class="icon-btn" onclick="showProfile('Nomsa Khumalo')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-id-badge"></i></button><button class="icon-btn"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar orange">SP</span><strong>Sipho Petersen</strong></div></td><td>850723****</td><td>Welder</td><td>Steelpoort</td><td>Dec 2026</td><td><span class="badge red">Docs missing</span></td><td><button class="icon-btn" onclick="showProfile('Sipho Petersen')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-id-badge"></i></button><button class="icon-btn" onclick="printPOE('Sipho Petersen')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar pink">LN</span><strong>Lerato Nkosi</strong></div></td><td>941217****</td><td>Rigger</td><td>Rustenburg</td><td>Jun 2027</td><td><span class="badge green">Active</span></td><td><button class="icon-btn" onclick="showProfile('Lerato Nkosi')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-id-badge"></i></button><button class="icon-btn" onclick="printPOE('Lerato Nkosi')"><i class="ti ti-printer"></i></button></td></tr>
+            <tr><td><div class="emp-name-cell"><span class="avatar blue">JD</span><strong>Johan du Plessis</strong></div></td><td>780904****</td><td>Fitter</td><td>Witbank</td><td>Jun 2027</td><td><span class="badge amber">Pending</span></td><td><button class="icon-btn" onclick="showProfile('Johan du Plessis')"><i class="ti ti-eye"></i></button><button class="icon-btn"><i class="ti ti-id-badge"></i></button><button class="icon-btn"><i class="ti ti-printer"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTRACTS PAGE -->
+    <div id="page-contracts" class="page">
+      <div class="page-header"><div class="page-title">Contracts</div></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-circle-check"></i></div><div><div class="stat-val">31</div><div class="stat-lbl">Active contracts</div></div></div>
+        <div class="stat-card"><div class="stat-icon amber"><i class="ti ti-clock"></i></div><div><div class="stat-val">7</div><div class="stat-lbl">Expiring in 30 days</div></div></div>
+        <div class="stat-card"><div class="stat-icon purple"><i class="ti ti-writing"></i></div><div><div class="stat-val">4</div><div class="stat-lbl">Awaiting sign-off</div></div></div>
+        <div class="stat-card"><div class="stat-icon red"><i class="ti ti-x"></i></div><div><div class="stat-val">2</div><div class="stat-lbl">Rejected</div></div></div>
+      </div>
+      <div class="card"><div class="card-header"><span class="card-title">All contracts</span></div>
+        <table class="data-table">
+          <thead><tr><th>Employee</th><th>Site</th><th>Duration</th><th>Start</th><th>End</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sipho Petersen</strong></td><td>Tharisa, Steelpoort</td><td>6 months</td><td>10 Jun 2026</td><td>10 Dec 2026</td><td><span class="badge amber">Awaiting sign-off</span></td><td><button class="btn btn-sm" onclick="showMain('signoff')"><i class="ti ti-writing"></i> Sign off</button></td></tr>
+            <tr><td><strong>Thabo Molefe</strong></td><td>Impala, Rustenburg</td><td>6 months</td><td>1 Jun 2026</td><td>30 Nov 2026</td><td><span class="badge green">Signed</span></td><td><button class="btn btn-sm"><i class="ti ti-download"></i> Download</button></td></tr>
+            <tr><td><strong>Lerato Nkosi</strong></td><td>Impala, Rustenburg</td><td>12 months</td><td>1 Jan 2026</td><td>31 Dec 2026</td><td><span class="badge green">Signed</span></td><td><button class="btn btn-sm"><i class="ti ti-download"></i> Download</button></td></tr>
+            <tr><td><strong>Nomsa Khumalo</strong></td><td>Exxaro, Witbank</td><td>3 months</td><td>1 Jul 2026</td><td>30 Sep 2026</td><td><span class="badge amber">Pending docs</span></td><td><button class="btn btn-sm"><i class="ti ti-eye"></i> View</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DOCUMENTS PAGE -->
+    <div id="page-documents" class="page">
+      <div class="page-header"><div class="page-title">Documents</div><button class="btn btn-primary"><i class="ti ti-upload"></i> Upload document</button></div>
+      <div class="card"><div class="card-header"><span class="card-title">Document vault</span><span class="badge purple">403 files</span></div>
+        <table class="data-table">
+          <thead><tr><th>Employee</th><th>Document type</th><th>Uploaded</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sipho Petersen</strong></td><td><i class="ti ti-file-type-pdf" style="color:#534AB7"></i> SA ID document</td><td>5 Jun 2026</td><td><span class="badge green">Verified</span></td><td><button class="icon-btn"><i class="ti ti-download"></i></button><button class="icon-btn"><i class="ti ti-eye"></i></button></td></tr>
+            <tr><td><strong>Sipho Petersen</strong></td><td><i class="ti ti-file-type-pdf" style="color:#534AB7"></i> Welding trade certificate</td><td>5 Jun 2026</td><td><span class="badge green">Verified</span></td><td><button class="icon-btn"><i class="ti ti-download"></i></button><button class="icon-btn"><i class="ti ti-eye"></i></button></td></tr>
+            <tr><td><strong>Sipho Petersen</strong></td><td><i class="ti ti-alert-triangle" style="color:#E24B4A"></i> Medical fitness cert</td><td>—</td><td><span class="badge red">Missing</span></td><td><button class="icon-btn"><i class="ti ti-send"></i></button></td></tr>
+            <tr><td><strong>Thabo Molefe</strong></td><td><i class="ti ti-file-type-pdf" style="color:#534AB7"></i> Site induction cert</td><td>2 Jun 2026</td><td><span class="badge green">Verified</span></td><td><button class="icon-btn"><i class="ti ti-download"></i></button><button class="icon-btn"><i class="ti ti-eye"></i></button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SITES PAGE -->
+    <div id="page-sites" class="page">
+      <div class="page-header"><div class="page-title">Mine Sites</div><button class="btn btn-primary" onclick="showAddSiteModal()"><i class="ti ti-plus"></i> Add site</button></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon purple"><i class="ti ti-building-factory"></i></div><div><div class="stat-val">5</div><div class="stat-lbl">Active sites</div></div></div>
+        <div class="stat-card"><div class="stat-icon green"><i class="ti ti-users"></i></div><div><div class="stat-val">48</div><div class="stat-lbl">Deployed employees</div></div></div>
+        <div class="stat-card"><div class="stat-icon amber"><i class="ti ti-calendar-x"></i></div><div><div class="stat-val">7</div><div class="stat-lbl">Contracts expiring soon</div></div></div>
+      </div>
+      <div id="sites-list">
+        <div class="site-row"><div class="site-icon"><i class="ti ti-building-factory"></i></div><div class="site-info"><div class="site-name">Tharisa Mine <span class="badge green">Active</span></div><div class="site-detail">Steelpoort, Limpopo · 14 employees · 3, 6 & 12 month contracts</div></div><div class="site-actions"><span class="badge purple">8 active · 6 ending soon</span><button class="btn btn-sm"><i class="ti ti-users"></i> View staff</button><button class="btn btn-sm"><i class="ti ti-edit"></i> Edit</button></div></div>
+        <div class="site-row"><div class="site-icon"><i class="ti ti-building-factory"></i></div><div class="site-info"><div class="site-name">Impala Platinum <span class="badge green">Active</span></div><div class="site-detail">Rustenburg, North West · 18 employees · 6 & 12 month contracts</div></div><div class="site-actions"><span class="badge purple">18 active</span><button class="btn btn-sm"><i class="ti ti-users"></i> View staff</button><button class="btn btn-sm"><i class="ti ti-edit"></i> Edit</button></div></div>
+        <div class="site-row"><div class="site-icon"><i class="ti ti-building-factory"></i></div><div class="site-info"><div class="site-name">Exxaro Matla <span class="badge green">Active</span></div><div class="site-detail">Witbank, Mpumalanga · 9 employees · 3 & 6 month contracts</div></div><div class="site-actions"><span class="badge amber">7 active · 2 ending soon</span><button class="btn btn-sm"><i class="ti ti-users"></i> View staff</button><button class="btn btn-sm"><i class="ti ti-edit"></i> Edit</button></div></div>
+        <div class="site-row"><div class="site-icon"><i class="ti ti-building-factory"></i></div><div class="site-info"><div class="site-name">Sasol Mining <span class="badge green">Active</span></div><div class="site-detail">Secunda, Mpumalanga · 4 employees · 3 month contracts</div></div><div class="site-actions"><span class="badge purple">4 active</span><button class="btn btn-sm"><i class="ti ti-users"></i> View staff</button><button class="btn btn-sm"><i class="ti ti-edit"></i> Edit</button></div></div>
+        <div class="site-row"><div class="site-icon"><i class="ti ti-building-factory"></i></div><div class="site-info"><div class="site-name">Sibanye-Stillwater <span class="badge amber">Winding down</span></div><div class="site-detail">Carletonville, Gauteng · 3 employees remaining</div></div><div class="site-actions"><span class="badge amber">3 ending Jul 2026</span><button class="btn btn-sm"><i class="ti ti-users"></i> View staff</button><button class="btn btn-sm"><i class="ti ti-edit"></i> Edit</button></div></div>
+      </div>
+    </div>
+
+    <!-- SEND LINK PAGE -->
+    <div id="page-send-link" class="page">
+      <div class="page-header"><div class="page-title">Send Onboarding Link</div></div>
+      <div class="card" style="max-width:520px">
+        <div class="card-title-text">Send a secure onboarding link to a new or returning employee</div>
+        <div class="field"><label>Employee name (or leave blank for new)</label><input type="text" placeholder="e.g. Sipho Petersen" id="send-name" /></div>
+        <div class="field"><label>Employee phone / email <span class="req">*</span></label><input type="text" placeholder="071 000 0000 or email@address.com" id="send-contact" /></div>
+        <div class="field"><label>Assign to site <span class="req">*</span></label>
+          <select id="send-site">
+            <option>Tharisa Mine — Steelpoort</option>
+            <option>Impala Platinum — Rustenburg</option>
+            <option>Exxaro Matla — Witbank</option>
+            <option>Sasol Mining — Secunda</option>
+            <option>Sibanye-Stillwater — Carletonville</option>
+          </select>
+        </div>
+        <div class="field"><label>Contract duration</label>
+          <div class="duration-btns">
+            <button class="dur-btn selected" onclick="selectDur(this)">3 months</button>
+            <button class="dur-btn" onclick="selectDur(this)">6 months</button>
+            <button class="dur-btn" onclick="selectDur(this)">12 months</button>
+          </div>
+        </div>
+        <button class="btn btn-primary full-width" onclick="sendLinkAlert()"><i class="ti ti-send"></i> Send onboarding link</button>
+      </div>
+    </div>
+
+    <!-- SIGN-OFF PAGE -->
+    <div id="page-signoff" class="page">
+      <div class="page-header">
+        <div class="page-title">Contract Sign-off — Sipho Petersen</div>
+        <span class="badge amber"><i class="ti ti-clock"></i> Awaiting sign-off</span>
+      </div>
+      <div class="signoff-layout">
+        <div class="signoff-contract card">
+          <div class="card-title-text">Employment Contract</div>
+          <div class="contract-body">
+            <h3>Fixed Term Employment Contract</h3>
+            <p class="contract-sub">Acme Labour Co. · Ref: ACL-2026-0042</p>
+            <p>This agreement is between <strong>Acme Labour Co.</strong> and <strong>Sipho Petersen</strong> (ID: 850723 1234 567).</p>
+            <p>Appointed as a <strong>Welder</strong> at <strong>Tharisa Mine, Steelpoort</strong> for <strong>6 months</strong>, commencing <strong>10 June 2026</strong> at <strong>R 850/day</strong>.</p>
+            <p>PAYE deductions apply. Payment to FNB account ****8901. Tax number: 987 654 3210.</p>
+            <div class="sig-row">
+              <div class="sig-block signed"><div class="sig-label">Employee</div><div class="sig-name">Sipho Petersen</div><small>Signed 5 Jun 2026</small></div>
+              <div class="sig-block" id="hr-sig"><div class="sig-label">HR Admin</div><div class="sig-name" style="color:var(--text-tertiary)">Tap approve to sign</div><small>&nbsp;</small></div>
+            </div>
+          </div>
+        </div>
+        <div class="signoff-panel">
+          <div class="card">
+            <div class="card-title-text">Pre-approval checklist</div>
+            <div class="check-item ok"><i class="ti ti-circle-check"></i> ID document verified</div>
+            <div class="check-item ok"><i class="ti ti-circle-check"></i> Trade certificate on file</div>
+            <div class="check-item ok"><i class="ti ti-circle-check"></i> Banking details confirmed</div>
+            <div class="check-item ok"><i class="ti ti-circle-check"></i> Tax number captured</div>
+            <div class="check-item ok"><i class="ti ti-circle-check"></i> Site induction certificate</div>
+            <div class="check-item fail"><i class="ti ti-alert-circle"></i> Medical cert — missing</div>
+            <div class="check-item fail"><i class="ti ti-alert-circle"></i> COID — outstanding</div>
+          </div>
+          <div class="card">
+            <div class="card-title-text">Notes to employee</div>
+            <textarea class="notes-ta">Please submit your medical certificate and COID as soon as possible.</textarea>
+            <div class="signoff-actions">
+              <button class="btn btn-danger"><i class="ti ti-x"></i> Reject</button>
+              <button class="btn"><i class="ti ti-send"></i> Request docs</button>
+            </div>
+            <button class="btn btn-success full-width mt" onclick="approveContract()"><i class="ti ti-writing"></i> Approve & sign contract</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div id="page-settings" class="page">
+      <div class="page-header"><div class="page-title">Settings</div></div>
+      <div class="card" style="max-width:520px">
+        <div class="card-title-text">Company profile</div>
+        <div class="field"><label>Company name</label><input type="text" value="Acme Labour Co." /></div>
+        <div class="field"><label>Registration number</label><input type="text" value="2019/012345/07" /></div>
+        <div class="field"><label>Labour broker licence</label><input type="text" value="LB-2019-00421" /></div>
+        <div class="field"><label>Admin email</label><input type="email" value="admin@acmelabour.co.za" /></div>
+        <div class="field"><label>Phone</label><input type="tel" value="011 000 0000" /></div>
+        <button class="btn btn-primary"><i class="ti ti-device-floppy"></i> Save changes</button>
+      </div>
+      <div class="card mt" style="max-width:520px">
+        <div class="card-title-text">Subscription — Pro plan</div>
+        <div class="sub-info"><span class="badge purple">Pro</span> <span>R 1 299 / month · Up to 500 employees · Renews 1 Jul 2026</span></div>
+        <button class="btn mt"><i class="ti ti-credit-card"></i> Manage billing</button>
+      </div>
+    </div>
+
+    <!-- EMPLOYEE PROFILE (modal-style full page) -->
+    <div id="page-profile" class="page">
+      <div class="page-header">
+        <button class="btn" onclick="showMain('employees')"><i class="ti ti-arrow-left"></i> Back</button>
+        <div class="page-title" id="profile-title">Employee Profile</div>
+        <button class="btn btn-primary" onclick="printPOE('current')"><i class="ti ti-printer"></i> Print POE</button>
+      </div>
+      <div class="profile-header-card card">
+        <div class="avatar large purple" id="profile-avatar">SP</div>
+        <div class="profile-meta">
+          <div class="profile-name" id="profile-name">Sipho Petersen</div>
+          <div class="profile-sub">Welder · Tharisa Mine, Steelpoort · Ref: ACL-2026-0042</div>
+          <div class="profile-badges"><span class="badge purple">Returning employee</span> <span class="badge amber"><i class="ti ti-alert-triangle"></i> 2 docs missing</span> <span class="badge green">Active</span></div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn"><i class="ti ti-refresh"></i> Renew contract</button>
+          <button class="btn"><i class="ti ti-id-badge"></i> View CV</button>
+          <button class="btn btn-primary" onclick="printPOE('current')"><i class="ti ti-printer"></i> Print POE</button>
+        </div>
+      </div>
+      <div class="profile-grid">
+        <div>
+          <div class="card"><div class="card-title-text">Personal details</div>
+            <div class="info-row"><span>ID number</span><strong>850723 1234 567</strong></div>
+            <div class="info-row"><span>Phone</span><strong>071 234 5678</strong></div>
+            <div class="info-row"><span>Email</span><strong>sipho.p@gmail.com</strong></div>
+            <div class="info-row"><span>Address</span><strong>14 Acacia St, Soweto</strong></div>
+            <div class="info-row"><span>Next of kin</span><strong>Zanele · 082 987 6543</strong></div>
+            <div class="info-row"><span>Tax number</span><strong>987 654 3210</strong></div>
+            <div class="info-row"><span>Bank</span><strong>FNB · ****8901 · Cheque</strong></div>
+          </div>
+          <div class="card"><div class="card-title-text">Employment history</div>
+            <div class="hist-item current"><div class="hist-dot"></div><div><strong>Welder — current</strong><div class="hist-site">Tharisa Mine, Steelpoort</div><small>Jun 2026 – Dec 2026 · 6 months</small></div></div>
+            <div class="hist-item"><div class="hist-dot old"></div><div>Welder<div class="hist-site">Sibanye-Stillwater, Carletonville</div><small>Jan 2025 – Dec 2025 · 12 months</small></div></div>
+            <div class="hist-item"><div class="hist-dot old"></div><div>Welder<div class="hist-site">Exxaro Matla, Witbank</div><small>Jun 2024 – Nov 2024 · 6 months</small></div></div>
+          </div>
+        </div>
+        <div>
+          <div class="card"><div class="card-title-text">Current contract</div>
+            <div class="contract-signed-banner"><i class="ti ti-circle-check"></i> Signed & approved · 5 Jun 2026</div>
+            <div class="info-row"><span>Site</span><strong>Tharisa Mine</strong></div>
+            <div class="info-row"><span>Duration</span><strong>6 months</strong></div>
+            <div class="info-row"><span>Daily rate</span><strong>R 850.00</strong></div>
+            <div class="info-row"><span>Start</span><strong>10 Jun 2026</strong></div>
+            <div class="info-row"><span>End</span><strong>10 Dec 2026</strong></div>
+          </div>
+          <div class="card"><div class="card-title-text">Documents <span class="badge amber">4/6</span></div>
+            <div class="doc-item ok"><i class="ti ti-file-type-pdf"></i><div><div>SA ID document</div><small>Uploaded 5 Jun 2026</small></div><button class="icon-btn"><i class="ti ti-download"></i></button></div>
+            <div class="doc-item ok"><i class="ti ti-file-type-pdf"></i><div><div>Welding trade certificate</div><small>Uploaded 5 Jun 2026</small></div><button class="icon-btn"><i class="ti ti-download"></i></button></div>
+            <div class="doc-item ok"><i class="ti ti-file-type-pdf"></i><div><div>Bank confirmation letter</div><small>Uploaded 5 Jun 2026</small></div><button class="icon-btn"><i class="ti ti-download"></i></button></div>
+            <div class="doc-item ok"><i class="ti ti-file-type-pdf"></i><div><div>Site induction certificate</div><small>Uploaded 5 Jun 2026</small></div><button class="icon-btn"><i class="ti ti-download"></i></button></div>
+            <div class="doc-item missing"><i class="ti ti-alert-triangle"></i><div><div>Medical fitness cert</div><small style="color:#E24B4A">Not uploaded</small></div><button class="icon-btn"><i class="ti ti-send"></i></button></div>
+            <div class="doc-item missing"><i class="ti ti-alert-triangle"></i><div><div>COID / workman's comp</div><small style="color:#E24B4A">Not uploaded</small></div><button class="icon-btn"><i class="ti ti-send"></i></button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SIGNUP SCREEN -->
+<div id="signup-screen" class="screen-full" style="display:none">
+  <div class="login-bg"></div>
+  <div class="login-card wide">
+    <div class="login-logo"><img src="logo.svg" width="36" height="36" alt="OnboardPro logo"><span>Onboard<span class="pro">Pro</span></span></div>
+    <div class="login-tagline">Create your company account</div>
+    <div class="plan-row">
+      <div class="mini-plan" onclick="selectPlan(this,'Starter')" data-plan="Starter"><div class="plan-name">Starter</div><div class="plan-price">R 499<span>/mo</span></div><div class="plan-lim">50 employees</div></div>
+      <div class="mini-plan selected" onclick="selectPlan(this,'Pro')" data-plan="Pro"><div class="plan-badge">Popular</div><div class="plan-name">Pro</div><div class="plan-price">R 1 299<span>/mo</span></div><div class="plan-lim">500 employees</div></div>
+      <div class="mini-plan" onclick="selectPlan(this,'Enterprise')" data-plan="Enterprise"><div class="plan-name">Enterprise</div><div class="plan-price">R 3 499<span>/mo</span></div><div class="plan-lim">Unlimited</div></div>
+    </div>
+    <div class="signup-grid">
+      <div class="field"><label>Company name</label><input type="text" placeholder="e.g. ProStaff Mining (Pty) Ltd" /></div>
+      <div class="field"><label>Reg. number</label><input type="text" placeholder="2019/123456/07" /></div>
+      <div class="field"><label>Admin email</label><input type="email" placeholder="admin@company.co.za" /></div>
+      <div class="field"><label>Phone</label><input type="tel" placeholder="011 000 0000" /></div>
+      <div class="field"><label>Labour broker licence</label><input type="text" placeholder="LB-XXXX-XXXX" /></div>
+      <div class="field"><label>Password</label><input type="password" placeholder="Create a password" /></div>
+    </div>
+    <button class="btn-login" onclick="showScreen('dashboard')"><i class="ti ti-rocket"></i> Create company account</button>
+    <div class="login-footer"><a href="#" onclick="showScreen('login-screen')">← Back to sign in</a></div>
+  </div>
+</div>
+
+<!-- POE PRINT MODAL -->
+<div id="poe-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;overflow-y:auto">
+  <div class="poe-modal-inner">
+    <div class="poe-toolbar">
+      <div style="font-weight:500">POE — <span id="poe-emp-name">Sipho Petersen</span></div>
+      <div style="display:flex;gap:8px">
+        <button class="btn" onclick="closePOE()"><i class="ti ti-x"></i> Close</button>
+        <button class="btn btn-primary" onclick="window.print()"><i class="ti ti-printer"></i> Print</button>
+      </div>
+    </div>
+    <div class="poe-doc" id="printable-area">
+      <div class="poe-header-bar">
+        <div><div class="poe-emp-title">Portfolio of Evidence (POE)</div><div class="poe-emp-sub" id="poe-sub">Sipho Petersen · Welder · Tharisa Mine, Steelpoort</div><div class="poe-ref">Ref: ACL-2026-0042 · Generated 5 Jun 2026</div></div>
+        <div style="text-align:right"><div style="font-weight:500;color:#CECBF6">Acme Labour Co.</div><div style="font-size:12px;color:#AFA9EC">Registered labour broker</div></div>
+      </div>
+      <div class="poe-body">
+        <div class="poe-section"><div class="poe-sec-title">Page 1 — Personal details</div>
+          <div class="poe-grid3">
+            <div class="poe-field"><div class="poe-fl">Full name</div><div class="poe-fv">Sipho Petersen</div></div>
+            <div class="poe-field"><div class="poe-fl">ID number</div><div class="poe-fv">850723 1234 567</div></div>
+            <div class="poe-field"><div class="poe-fl">Date of birth</div><div class="poe-fv">23 July 1985</div></div>
+            <div class="poe-field"><div class="poe-fl">Phone</div><div class="poe-fv">071 234 5678</div></div>
+            <div class="poe-field"><div class="poe-fl">Email</div><div class="poe-fv">sipho.p@gmail.com</div></div>
+            <div class="poe-field"><div class="poe-fl">Address</div><div class="poe-fv">14 Acacia St, Soweto, 1804</div></div>
+            <div class="poe-field"><div class="poe-fl">Tax number</div><div class="poe-fv">987 654 3210</div></div>
+            <div class="poe-field"><div class="poe-fl">Next of kin</div><div class="poe-fv">Zanele Petersen</div></div>
+            <div class="poe-field"><div class="poe-fl">NOK contact</div><div class="poe-fv">082 987 6543</div></div>
+          </div>
+        </div>
+        <div class="poe-section"><div class="poe-sec-title">Page 2 — Contract summary</div>
+          <div class="poe-grid3">
+            <div class="poe-field"><div class="poe-fl">Trade</div><div class="poe-fv">Welder</div></div>
+            <div class="poe-field"><div class="poe-fl">Site</div><div class="poe-fv">Tharisa Mine, Steelpoort</div></div>
+            <div class="poe-field"><div class="poe-fl">Duration</div><div class="poe-fv">6 months</div></div>
+            <div class="poe-field"><div class="poe-fl">Start date</div><div class="poe-fv">10 June 2026</div></div>
+            <div class="poe-field"><div class="poe-fl">End date</div><div class="poe-fv">10 December 2026</div></div>
+            <div class="poe-field"><div class="poe-fl">Daily rate</div><div class="poe-fv">R 850.00</div></div>
+            <div class="poe-field"><div class="poe-fl">Bank</div><div class="poe-fv">FNB ****8901</div></div>
+            <div class="poe-field"><div class="poe-fl">Tax status</div><div class="poe-fv">PAYE employee</div></div>
+            <div class="poe-field"><div class="poe-fl">Contract status</div><div class="poe-fv" style="color:#1D9E75">Signed & approved</div></div>
+          </div>
+        </div>
+        <div class="poe-section"><div class="poe-sec-title">Page 3 — Employment history</div>
+          <div class="poe-hist"><span class="poe-dot active"></span><div><strong>Welder — Tharisa Mine, Steelpoort</strong></div><div style="color:#888">Jun 2026 – Dec 2026 · 6 months</div></div>
+          <div class="poe-hist"><span class="poe-dot"></span><div>Welder — Sibanye-Stillwater, Carletonville</div><div style="color:#888">Jan 2025 – Dec 2025 · 12 months</div></div>
+          <div class="poe-hist"><span class="poe-dot"></span><div>Welder — Exxaro Matla, Witbank</div><div style="color:#888">Jun 2024 – Nov 2024 · 6 months</div></div>
+        </div>
+        <div class="poe-section"><div class="poe-sec-title">Page 4 — Documents checklist</div>
+          <div class="poe-doc-row ok"><i class="ti ti-circle-check"></i> SA ID document <span>Uploaded · verified</span></div>
+          <div class="poe-doc-row ok"><i class="ti ti-circle-check"></i> Welding trade certificate <span>Uploaded · verified</span></div>
+          <div class="poe-doc-row ok"><i class="ti ti-circle-check"></i> Bank confirmation letter <span>Uploaded · verified</span></div>
+          <div class="poe-doc-row ok"><i class="ti ti-circle-check"></i> Site induction certificate <span>Uploaded · verified</span></div>
+          <div class="poe-doc-row missing"><i class="ti ti-alert-circle"></i> Medical fitness certificate <span style="color:#E24B4A">Not yet submitted</span></div>
+          <div class="poe-doc-row missing"><i class="ti ti-alert-circle"></i> COID / workman's compensation <span style="color:#E24B4A">Not yet submitted</span></div>
+          <div class="poe-doc-row ok"><i class="ti ti-circle-check"></i> Signed employment contract <span>Signed 5 Jun 2026</span></div>
+        </div>
+        <div class="poe-section"><div class="poe-sec-title">Page 5 — Site supervisor review (to be completed on site)</div>
+          <div class="poe-review-grid">
+            <div><div class="poe-fl">Performance rating (circle one)</div><div class="poe-rating">1 &nbsp;&nbsp; 2 &nbsp;&nbsp; 3 &nbsp;&nbsp; 4 &nbsp;&nbsp; 5</div></div>
+            <div><div class="poe-fl">Recommend for re-deployment?</div><div class="poe-rating">Yes &nbsp;&nbsp;&nbsp;&nbsp; No</div></div>
+          </div>
+          <div class="poe-fl" style="margin-top:12px">Supervisor comments</div>
+          <div class="poe-line"></div><div class="poe-line"></div><div class="poe-line"></div>
+        </div>
+        <div class="poe-sig-row">
+          <div class="poe-sig-block"><div class="poe-fl">Employee signature</div><div class="poe-sig-name">Sipho Petersen</div></div>
+          <div class="poe-sig-block"><div class="poe-fl">HR admin signature</div><div class="poe-sig-name">Acme Labour Co.</div></div>
+          <div class="poe-sig-block"><div class="poe-fl">Site supervisor signature</div><div class="poe-sig-name">_______________</div></div>
+        </div>
+      </div>
+      <div class="poe-footer-bar">Generated by OnboardPro · Ref: ACL-2026-0042 · 5 Jun 2026 &nbsp;&nbsp;&nbsp; ✓ Verified by Acme Labour Co.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SITE MODAL -->
+<div id="site-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:1000;display:none;align-items:center;justify-content:center">
+  <div class="modal-card">
+    <div class="modal-header"><span>Add mine site</span><button onclick="closeSiteModal()" style="background:none;border:none;cursor:pointer;font-size:18px"><i class="ti ti-x"></i></button></div>
+    <div class="field"><label>Site name</label><input type="text" id="new-site-name" placeholder="e.g. Anglo American — Mogalakwena" /></div>
+    <div class="field"><label>Location</label><input type="text" id="new-site-loc" placeholder="e.g. Mokopane, Limpopo" /></div>
+    <div class="field"><label>Contract durations offered</label>
+      <div class="duration-btns">
+        <button class="dur-btn selected">3 months</button>
+        <button class="dur-btn selected">6 months</button>
+        <button class="dur-btn selected">12 months</button>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" onclick="closeSiteModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="addSite()"><i class="ti ti-plus"></i> Add site</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" style="display:none"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
